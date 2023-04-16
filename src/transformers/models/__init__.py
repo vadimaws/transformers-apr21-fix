@@ -160,6 +160,7 @@ from . import (
     roberta_prelayernorm,
     roc_bert,
     roformer,
+    rwkv,
     segformer,
     sew,
     sew_d,
