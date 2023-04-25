@@ -513,7 +513,7 @@ def main():
             train_dataset = train_dataset.select(range(max_train_samples))
         # Create train feature from dataset
         with training_args.main_process_first(desc="train dataset map pre-processing"):
-            train_dataset = train_dataset.applymap(
+            train_dataset = train_dataset.map(
                 prepare_train_features,
                 batched=True,
                 num_proc=data_args.preprocessing_num_workers,
@@ -586,7 +586,7 @@ def main():
             eval_examples = eval_examples.select(range(max_eval_samples))
         # Validation Feature Creation
         with training_args.main_process_first(desc="validation dataset map pre-processing"):
-            eval_dataset = eval_examples.applymap(
+            eval_dataset = eval_examples.map(
                 prepare_train_features,
                 batched=True,
                 num_proc=data_args.preprocessing_num_workers,
@@ -609,7 +609,7 @@ def main():
             predict_examples = predict_examples.select(range(data_args.max_predict_samples))
         # Predict Feature Creation
         with training_args.main_process_first(desc="prediction dataset map pre-processing"):
-            predict_dataset = predict_examples.applymap(
+            predict_dataset = predict_examples.map(
                 prepare_train_features,
                 batched=True,
                 num_proc=data_args.preprocessing_num_workers,

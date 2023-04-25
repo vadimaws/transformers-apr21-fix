@@ -11,6 +11,7 @@ import evaluate
 from datasets import load_dataset
 import pandas as pd
 import numpy as np
+from datasets import Dataset
 
 
 
@@ -167,8 +168,11 @@ def processing_RACE_df(df, source_prefix):
     df_new['INPUT_textbook_text'] = list_textbook_texts
     df_new['OUTPUT_mc_question'] = list_mc_questions
 
+    # convert this dataframe to a HuggingFace dataset.
+    hf_dataset = Dataset.from_pandas(df_new)
+
     # return modified DF, with two new columns.
-    return df_new
+    return hf_dataset
 
 
 # let's see if this works with the race dataset.
