@@ -195,7 +195,7 @@ class DataTrainingArguments:
         default="", metadata={"help": "A prefix to add before every source text (useful for T5 models)."}
     )
     max_answer_length: int = field(
-        default=30,
+        default=128,
         metadata={
             "help": (
                 "The maximum length of an answer that can be generated. This is needed because the start "
@@ -244,6 +244,7 @@ def main():
 
     # prefix.
     prefix = data_args.source_prefix if data_args.source_prefix is not None else ""
+    prefix = prefix.replace("-", " ")
 
     # Setup logging
     logging.basicConfig(
@@ -252,9 +253,9 @@ def main():
         handlers=[logging.StreamHandler(sys.stdout)],
     )
 
-    if training_args.should_log:
-        # The default of training_args.log_level is passive, so we set log level at info here to have that default.
-        transformers.utils.logging.set_verbosity_info()
+    # if training_args.should_log:
+    #     # The default of training_args.log_level is passive, so we set log level at info here to have that default.
+    #     transformers.utils.logging.set_verbosity_info()
 
     log_level = training_args.get_process_log_level()
     logger.setLevel(log_level)
