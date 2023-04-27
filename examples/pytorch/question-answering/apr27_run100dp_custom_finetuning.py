@@ -642,27 +642,32 @@ def main():
     )
 
     # Metric
-    import nltk
+    # import nltk
     # trying to import nltk.
-    nltk.download()
-    from nltk.tokenize import sent_tokenize, word_tokenize
-    import rouge_score
+    # nltk.download()
+    # from nltk.tokenize import sent_tokenize, word_tokenize
+    # import rouge_score
 
+    import re
 
+    def simple_sent_tokenize(text):
+        return re.split(r'(?<=[.!?]) +', text)
 
-
+    # Metric
     metric = evaluate.load("rouge")
-
-
 
     def postprocess_text(preds, labels):
         preds = [pred.strip() for pred in preds]
         labels = [label.strip() for label in labels]
 
+        preds = ["\n".join(simple_sent_tokenize(pred)) for pred in preds]
+        labels = ["\n".join(simple_sent_tokenize(label)) for label in labels]
+
         # rougeLSum expects newline after each sentence
+        """
         preds = ["\n".join(nltk.sent_tokenize(pred)) for pred in preds]
         labels = ["\n".join(nltk.sent_tokenize(label)) for label in labels]
-
+        """
         return preds, labels
 
     def compute_metrics(eval_preds):
