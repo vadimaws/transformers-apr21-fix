@@ -129,7 +129,13 @@ from transformers.utils.versions import require_version
 # print(str_mc_question)
 
 text_prefix = "Based on the following passage, generate a question with one correct answer choice and three distractor choices: \n\n "
+column_names = ["example_id", "article", "answer", "question", "options"]
 def processing_RACE_df(df, source_prefix):
+    exampleID_column_name = "example_id" if "example_id" in column_names else column_names[0]
+    article_column_name = "article" if "article" in column_names else column_names[1]
+    answer_column_name = "answer" if "answer" in column_names else column_names[2]
+    question_column_name = "question" if "question" in column_names else column_names[3]
+    options_column_name = "options" if "options" in column_names else column_names[4]
 
     # create LISTS for each train set.
     exampleID_list = list(df[exampleID_column_name])  # .tolist()
@@ -175,6 +181,24 @@ def processing_RACE_df(df, source_prefix):
     return hf_dataset
 
 
+# raw_datasets = load_dataset("race", "all")
+# column_names = raw_datasets["train"].column_names
+# print('column names: ', column_names)
+# '''
+# column_names = raw_datasets["validation"].column_names
+# column_names = raw_datasets["test"].column_names
+# '''
+#
+# # names of columns.
+# exampleID_column_name = "example_id" if "example_id" in column_names else column_names[0]
+# article_column_name = "article" if "article" in column_names else column_names[1]
+# answer_column_name = "answers" if "answers" in column_names else column_names[2]
+# question_column_name = "question" if "question" in column_names else column_names[3]
+# options_column_name = "options" if "options" in column_names else column_names[4]
+#
+# # train, val, test sets.
+# race_train = raw_datasets["train"]
+
 # let's see if this works with the race dataset.
 # print('\n')
 # print('\n')
@@ -187,7 +211,9 @@ def processing_RACE_df(df, source_prefix):
 # print('\n')
 # new_race_train = processing_RACE_df(race_train, text_prefix)
 # print('AFTER PRE-PROCESSING....')
+# print(type(new_race_train))
 # print(new_race_train)
+# print(new_race_train[:1])
 # # print(new_race_train.columns)
 # print(new_race_train['INPUT_textbook_text'])
 # print(new_race_train['OUTPUT_mc_question'])
