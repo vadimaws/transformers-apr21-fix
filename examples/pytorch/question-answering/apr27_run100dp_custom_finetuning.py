@@ -648,16 +648,18 @@ def main():
     # from nltk.tokenize import sent_tokenize, word_tokenize
     # import rouge_score
 
+    from rouge_score import rouge_scorer, scoring
+
     import re
 
     def simple_sent_tokenize(text):
         return re.split(r'(?<=[.!?]) +', text)
 
     # Metric
-    ''' metric = evaluate.load("rouge") '''
-    from datasets import load_metric
+    metric = evaluate.load("rouge")
+    # from datasets import load_metric
 
-    metric = load_metric("rouge")
+    # metric = load_metric("rouge")
 
     def postprocess_text(preds, labels):
         preds = [pred.strip() for pred in preds]
@@ -686,8 +688,17 @@ def main():
         # Some simple post-processing
         decoded_preds, decoded_labels = postprocess_text(decoded_preds, decoded_labels)
 
-        result = metric.compute(predictions=decoded_preds, references=decoded_labels, use_stemmer=True)
-        result = {k: round(v * 100, 4) for k, v in result.items()}
+        """
+                scorer = rouge_scorer.RougeScorer(['rouge1', 'rougeL'], use_stemmer=True)
+                scores = scorer.score('The quick brown fox jumps over the lazy dog',
+                                      'The quick brown dog jumps on the log.')
+                """
+
+        scorer = rouge_scorer.RougeScorer(['rouge1', 'rougeL'], use_stemmer=True)
+        result = scorer.score(decoded_labels, decoded_preds)
+
+        # result = metric.compute(predictions=decoded_preds, references=decoded_labels, use_stemmer=True)
+        # result = {k: round(v * 100, 4) for k, v in result.items()}
         prediction_lens = [np.count_nonzero(pred != tokenizer.pad_token_id) for pred in preds]
         result["gen_len"] = np.mean(prediction_lens)
         return result
