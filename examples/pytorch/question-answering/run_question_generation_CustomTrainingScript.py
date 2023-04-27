@@ -656,7 +656,10 @@ def main():
         return re.split(r'(?<=[.!?]) +', text)
 
     # Metric
-    metric = evaluate.load("rouge")
+    ''' metric = evaluate.load("rouge") '''
+    from datasets import load_metric
+
+    metric = load_metric("rouge")
 
 
     def postprocess_text(preds, labels):
