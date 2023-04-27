@@ -483,7 +483,7 @@ def main():
                 targets.append(examples[question_column][i])
 
         ''' inputs = [prefix + inp for inp in inputs] '''  # (Prefix has already been added.)
-        model_inputs = tokenizer(inputs, max_length=data_args.max_source_length, padding=padding, truncation=True)
+        model_inputs = tokenizer(inputs, max_length=data_args.max_seq_length, padding=padding, truncation=True)
 
         # Tokenize targets with the `text_target` keyword argument
         labels = tokenizer(text_target=targets, max_length=max_target_length, padding=padding, truncation=True)
