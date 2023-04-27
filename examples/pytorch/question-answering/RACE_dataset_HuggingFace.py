@@ -38,95 +38,95 @@ from transformers.utils import check_min_version, send_example_telemetry
 from transformers.utils.versions import require_version
 '''
 
-# load the dataset.
-raw_datasets = load_dataset("race", "all")
-column_names = raw_datasets["train"].column_names
-print('column names: ', column_names)
-'''
-column_names = raw_datasets["validation"].column_names
-column_names = raw_datasets["test"].column_names
-'''
-
-# names of columns.
-exampleID_column_name = "example_id" if "example_id" in column_names else column_names[0]
-article_column_name = "article" if "article" in column_names else column_names[1]
-answer_column_name = "answers" if "answers" in column_names else column_names[2]
-question_column_name = "question" if "question" in column_names else column_names[3]
-options_column_name = "options" if "options" in column_names else column_names[4]
-
-# train, val, test sets.
-race_train = raw_datasets["train"]
-race_val = raw_datasets["validation"]
-race_test = raw_datasets["test"]
-print(race_train.shape)
-print(race_val.shape)
-print(race_test.shape)
-
-# create LISTS for each train set.
-exampleID_train = list(race_train[exampleID_column_name])  # .tolist()
-article_train = list(race_train[article_column_name])  # .tolist()
-answer_train = list(race_train[answer_column_name])  # .tolist()
-question_train = list(race_train[question_column_name])  # .tolist()
-options_train = list(race_train[options_column_name])  # .tolist()
-
-print('\n')
-print(type(article_train))
-print(len(article_train))
-print('\n')
-
-print(article_train[0])
-print('\n')
-print(article_train[1])
-print('\n')
-print(article_train[2])
-print('\n')
-
-print(answer_train[0])
-print('\n')
-print(answer_train[1])
-print('\n')
-print(answer_train[2])
-print('\n')
-
-print(question_train[0])
-print('\n')
-print(question_train[1])
-print('\n')
-print(question_train[2])
-print('\n')
-
-print(options_train[0])
-print('\n')
-print(options_train[1])
-print('\n')
-print(options_train[2])
-print('\n')
-
-
-i = 0
-article0 = article_train[0]
-answer0 = answer_train[0]
-question0 = question_train[0]
-options0 = options_train[0]
-
-# i want a column called TEXTBOOK_TEXT.
-# i want a LABELS column called MC_QUESTION.
-
-prefix = "Based on the following passage, generate a question with one correct answer choice and three distractor choices: \n\n "
-textbook_text0 = prefix + article0
-print('\n')
-print('TEXTBOOK TEXT: ')
-print(textbook_text0)
-
-list_ABCD = ['A. ', 'B. ', 'C. ', 'D. ']
-str_mc_question = question0 + '\n'
-for j in range(len(options0)):
-    str_mc_question += list_ABCD[j] + options0[j] + ' '
-# now append question to answer.
-str_mc_question += '\nAnswer: ' + answer0
-print('\n')
-print('QUESTION: ')
-print(str_mc_question)
+# # load the dataset.
+# raw_datasets = load_dataset("race", "all")
+# column_names = raw_datasets["train"].column_names
+# print('column names: ', column_names)
+# '''
+# column_names = raw_datasets["validation"].column_names
+# column_names = raw_datasets["test"].column_names
+# '''
+#
+# # names of columns.
+# exampleID_column_name = "example_id" if "example_id" in column_names else column_names[0]
+# article_column_name = "article" if "article" in column_names else column_names[1]
+# answer_column_name = "answers" if "answers" in column_names else column_names[2]
+# question_column_name = "question" if "question" in column_names else column_names[3]
+# options_column_name = "options" if "options" in column_names else column_names[4]
+#
+# # train, val, test sets.
+# race_train = raw_datasets["train"]
+# race_val = raw_datasets["validation"]
+# race_test = raw_datasets["test"]
+# print(race_train.shape)
+# print(race_val.shape)
+# print(race_test.shape)
+#
+# # create LISTS for each train set.
+# exampleID_train = list(race_train[exampleID_column_name])  # .tolist()
+# article_train = list(race_train[article_column_name])  # .tolist()
+# answer_train = list(race_train[answer_column_name])  # .tolist()
+# question_train = list(race_train[question_column_name])  # .tolist()
+# options_train = list(race_train[options_column_name])  # .tolist()
+#
+# print('\n')
+# print(type(article_train))
+# print(len(article_train))
+# print('\n')
+#
+# print(article_train[0])
+# print('\n')
+# print(article_train[1])
+# print('\n')
+# print(article_train[2])
+# print('\n')
+#
+# print(answer_train[0])
+# print('\n')
+# print(answer_train[1])
+# print('\n')
+# print(answer_train[2])
+# print('\n')
+#
+# print(question_train[0])
+# print('\n')
+# print(question_train[1])
+# print('\n')
+# print(question_train[2])
+# print('\n')
+#
+# print(options_train[0])
+# print('\n')
+# print(options_train[1])
+# print('\n')
+# print(options_train[2])
+# print('\n')
+#
+#
+# i = 0
+# article0 = article_train[0]
+# answer0 = answer_train[0]
+# question0 = question_train[0]
+# options0 = options_train[0]
+#
+# # i want a column called TEXTBOOK_TEXT.
+# # i want a LABELS column called MC_QUESTION.
+#
+# prefix = "Based on the following passage, generate a question with one correct answer choice and three distractor choices: \n\n "
+# textbook_text0 = prefix + article0
+# print('\n')
+# print('TEXTBOOK TEXT: ')
+# print(textbook_text0)
+#
+# list_ABCD = ['A. ', 'B. ', 'C. ', 'D. ']
+# str_mc_question = question0 + '\n'
+# for j in range(len(options0)):
+#     str_mc_question += list_ABCD[j] + options0[j] + ' '
+# # now append question to answer.
+# str_mc_question += '\nAnswer: ' + answer0
+# print('\n')
+# print('QUESTION: ')
+# print(str_mc_question)
 
 text_prefix = "Based on the following passage, generate a question with one correct answer choice and three distractor choices: \n\n "
 def processing_RACE_df(df, source_prefix):
@@ -176,29 +176,29 @@ def processing_RACE_df(df, source_prefix):
 
 
 # let's see if this works with the race dataset.
-print('\n')
-print('\n')
-print('\n')
-print('*******************************************************')
-print('BEFORE PRE-PROCESSING....')
-print(type(race_train))
-print(race_train)
-# print(race_train.columns)
-print('\n')
-new_race_train = processing_RACE_df(race_train, text_prefix)
-print('AFTER PRE-PROCESSING....')
-print(new_race_train)
-# print(new_race_train.columns)
-print(new_race_train['INPUT_textbook_text'])
-print(new_race_train['OUTPUT_mc_question'])
-
-
-def processing_MHE_df(df):
-    """
-    Fill this in once you get MHE data and know how it is structured.
-    """
-    return 0
-
+# print('\n')
+# print('\n')
+# print('\n')
+# print('*******************************************************')
+# print('BEFORE PRE-PROCESSING....')
+# print(type(race_train))
+# print(race_train)
+# # print(race_train.columns)
+# print('\n')
+# new_race_train = processing_RACE_df(race_train, text_prefix)
+# print('AFTER PRE-PROCESSING....')
+# print(new_race_train)
+# # print(new_race_train.columns)
+# print(new_race_train['INPUT_textbook_text'])
+# print(new_race_train['OUTPUT_mc_question'])
+#
+#
+# def processing_MHE_df(df):
+#     """
+#     Fill this in once you get MHE data and know how it is structured.
+#     """
+#     return 0
+#
 
 
 """
