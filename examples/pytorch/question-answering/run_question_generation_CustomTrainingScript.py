@@ -642,12 +642,16 @@ def main():
     )
 
     # Metric
-    metric = evaluate.load("rouge")
-
-    # trying to import nltk.
     import nltk
+    # trying to import nltk.
     nltk.download()
     from nltk.tokenize import sent_tokenize, word_tokenize
+    import rouge_score
+    import absl
+
+    # Metric
+    metric = evaluate.load("rouge")
+
 
     def postprocess_text(preds, labels):
         preds = [pred.strip() for pred in preds]
