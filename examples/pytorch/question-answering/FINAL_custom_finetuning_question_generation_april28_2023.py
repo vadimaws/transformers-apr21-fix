@@ -788,6 +788,13 @@ def main():
     else:
         trainer.create_model_card(**kwargs)
 
+    # HERE: isha. Added -- write model and tokenizer to S3.
+    if training_args.output_dir is not None:
+        s3_bucket = training_args.output_dir
+        model.save_pretrained(s3_bucket)
+        tokenizer.save_pretrained(s3_bucket)
+        print('Written to S3 bucket: ' + str(s3_bucket) + '!')
+
 
 """
     # Training
