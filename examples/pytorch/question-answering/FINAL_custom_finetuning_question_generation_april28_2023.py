@@ -790,10 +790,12 @@ def main():
 
     # HERE: isha. Added -- write model and tokenizer to S3.
     if training_args.output_dir is not None:
-        s3_bucket = training_args.output_dir
-        model.save_pretrained(s3_bucket)
-        tokenizer.save_pretrained(s3_bucket)
-        print('Written to S3 bucket: ' + str(s3_bucket) + '!')
+        ''' s3://aas-applied-ai-sagemaker-finetuned-models/T5-finetuned-RACE-all/ '''
+        # s3_bucket = training_args.output_dir
+        s3_bucket = 's3://sagemaker-us-east-1-912513860595/'
+        model.save_pretrained(s3_bucket + 'april30-model-raceALL')
+        tokenizer.save_pretrained(s3_bucket + 'april30-tokenizer-raceALL')
+        print('Written to S3 bucket: ' + str(s3_bucket) + ' !')
 
 
 """
