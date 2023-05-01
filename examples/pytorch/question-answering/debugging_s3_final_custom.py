@@ -794,7 +794,8 @@ def main():
         ''' s3://aas-applied-ai-sagemaker-finetuned-models/T5-finetuned-RACE-all/ '''
         # s3_bucket = training_args.output_dir
         s3 = boto3.client("s3")
-        bucket_name = 's3://aas-applied-ai-sagemaker-finetuned-models/T5-finetuned-RACE-all/'
+        # bucket_name = 's3://aas-applied-ai-sagemaker-finetuned-models/T5-finetuned-RACE-all/'
+        bucket_name = 'aas-applied-ai-sagemaker-finetuned-models'
         # s3_bucket = 's3://sagemaker-us-east-1-912513860595/'
         output_dir = training_args.output_dir
         model.save_pretrained(output_dir + 'model/')
@@ -802,12 +803,29 @@ def main():
         # print('Written to S3 bucket: ' + str(s3_bucket) + ' !')
         """ S3. """
         # now, write to S3.
+        '''
         for root, _, files in os.walk(output_dir):
             for file in files:
                 local_path = os.path.join(root, file)
                 s3_path = os.path.relpath(local_path, output_dir)
                 # upload the file to S3.
                 s3.upload_file(local_path, bucket_name, s3_path)
+        '''
+
+        # Function to upload a directory to S3
+        def upload_directory_to_s3(local_directory, s3_directory):
+            s3_prefix = "T5-finetuned-RACE-all"
+            for root, _, files in os.walk(local_directory):
+                for file in files:
+                    local_path = os.path.join(root, file)
+                    s3_path = os.path.join(s3_prefix, s3_directory, os.path.relpath(local_path, local_directory))
+
+                    # Upload the file to S3
+                    s3.upload_file(local_path, bucket_name, s3_path)
+
+        # Upload the model and tokenizer directories to S3
+        upload_directory_to_s3(output_dir + 'model/', "model")
+        upload_directory_to_s3(output_dir + 'tokenizer/', "tokenizer")
         """ Let's try it. """
 
 
